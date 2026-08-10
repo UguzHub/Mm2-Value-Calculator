@@ -1,5 +1,5 @@
 -- ==========================================
--- 1. VALUES MODULE
+-- 1. VERİ TABANIN (Values)
 -- ==========================================
 local Values = {
     Godlies = {
@@ -97,334 +97,192 @@ local Values = {
         ["Seer"] = { Value = 3, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 1, Change = "0" },
         ["Orange Seer"] = { Value = 2, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 1, Change = "0" },
         ["Yellow Seer"] = { Value = 2, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 1, Change = "0" }
-    },
-    Ancients = {},
-    Vintages = {}
+    }
 }
 
 -- ==========================================
--- 2. OFFERS MODULE
+-- 2. SERVİSLER VE ANA EKRAN DÜZENİ
 -- ==========================================
-local Offers = {}
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UIS = game:GetService("UserInputService")
+local player = Players.LocalPlayer
 
-Offers.Ratings = {
-    MegaW = 1.25,
-    W = 1.10,
-    Fair = 1,
-    L = 0.90,
-    MegaL = 0.75
-}
+local gui = Instance.new("ScreenGui")
+gui.Name = "UguzHub"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
 
-function Offers.Check(myValue, theirValue)
-    local ratio = theirValue / myValue
-
-    if ratio >= Offers.Ratings.MegaW then
-        return "Mega W"
-    elseif ratio >= Offers.Ratings.W then
-        return "W"
-    elseif ratio >= Offers.Ratings.Fair then
-        return "Fair"
-    elseif ratio >= Offers.Ratings.L then
-        return "L"
-    else
-        return "Mega L"
-    end
-end
-
-function Offers.FindNeeded(theirValue, goal, inventory, ValuesTable)
-    local needed = theirValue * Offers.Ratings[goal]
-
-    for item, amount in pairs(inventory) do
-        if ValuesTable.Godlies[item] then
-            if ValuesTable.Godlies[item].Value >= needed then
-                return item
-            end
-        end
-    end
-
-    return "Nothing found"
-end
-
--- ==========================================
--- 3. GUI SYSTEM & NOTIFICATION
--- ==========================================
-local function ShowLoadingNotification(gui)
-    local TweenService = game:GetService("TweenService")
-
-    local notifFrame = Instance.new("Frame")
-    notifFrame.Size = UDim2.new(0, 320, 0, 70)
-    -- Ekranın dışından başlar (animasyonlu geliş için)
-    notifFrame.Position = UDim2.new(1, 20, 0.85, 0)
-    notifFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    notifFrame.Parent = gui
-
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 10)
-    corner.Parent = notifFrame
-
-    local stroke = Instance.new("UIStroke")
-    stroke.Thickness = 2
-    stroke.Parent = notifFrame
-
+-- RGB Efekt Fonksiyonu
+local function applyRGB(stroke)
     local gradient = Instance.new("UIGradient")
     gradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 170)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(170, 0, 255))
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255,0,0)),
+        ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0,255,0)),
+        ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0,0,255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255,0,0))
     }
     gradient.Parent = stroke
-
-    local notifTitle = Instance.new("TextLabel")
-    notifTitle.Size = UDim2.new(1, -20, 0, 30)
-    notifTitle.Position = UDim2.new(0, 10, 0, 5)
-    notifTitle.BackgroundTransparency = 1
-    notifTitle.Text = "UguzHub🌟"
-    notifTitle.Font = Enum.Font.GothamBold
-    notifTitle.TextSize = 18
-    notifTitle.TextColor3 = Color3.fromRGB(0, 255, 170)
-    notifTitle.TextXAlignment = Enum.TextXAlignment.Left
-    notifTitle.Parent = notifFrame
-
-    local notifSub = Instance.new("TextLabel")
-    notifSub.Size = UDim2.new(1, -20, 0, 25)
-    notifSub.Position = UDim2.new(0, 10, 0, 35)
-    notifSub.BackgroundTransparency = 1
-    notifSub.Text = "Sosyal medya hesaplarımızı takip edin!"
-    notifSub.Font = Enum.Font.Gotham
-    notifSub.TextSize = 13
-    notifSub.TextColor3 = Color3.fromRGB(220, 220, 220)
-    notifSub.TextXAlignment = Enum.TextXAlignment.Left
-    notifSub.Parent = notifFrame
-
-    -- Ekrana giriş animasyonu
-    TweenService:Create(
-        notifFrame,
-        TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
-        {Position = UDim2.new(1, -340, 0.85, 0)}
-    ):Play()
-
-    -- 4 Saniye durduktan sonra kaybolma animasyonu
-    task.delay(4, function()
-        local hideTween = TweenService:Create(
-            notifFrame,
-            TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.In),
-            {Position = UDim2.new(1, 20, 0.85, 0)}
-        )
-        hideTween:Play()
-        hideTween.Completed:Wait()
-        notifFrame:Destroy()
-    end)
+    TweenService:Create(gradient, TweenInfo.new(2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1), {Rotation = 360}):Play()
 end
 
-local function CreateGUI(Values, Offers)
-    local Players = game:GetService("Players")
-    local player = Players.LocalPlayer
+-- ==========================================
+-- 3. YÜKLENME EKRANI (10 Saniyelik RGB)
+-- ==========================================
+local loadingFrame = Instance.new("Frame")
+loadingFrame.Size = UDim2.new(0, 320, 0, 180)
+loadingFrame.Position = UDim2.new(0.5, -160, 0.5, -90)
+loadingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Siyah Arka Plan
+loadingFrame.Parent = gui
 
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "MM2MobileHelper"
-    gui.ResetOnSpawn = false
-    gui.Parent = player:WaitForChild("PlayerGui")
+local lCorner = Instance.new("UICorner")
+lCorner.CornerRadius = UDim.new(0, 12)
+lCorner.Parent = loadingFrame
 
-    local UIS = game:GetService("UserInputService")
-    local TweenService = game:GetService("TweenService")
+local lStroke = Instance.new("UIStroke")
+lStroke.Thickness = 3
+lStroke.Parent = loadingFrame
+applyRGB(lStroke)
 
-    -- Yüklenme bildirimini çalıştır
-    ShowLoadingNotification(gui)
+local titleUguz = Instance.new("TextLabel")
+titleUguz.Size = UDim2.new(1, 0, 0, 50)
+titleUguz.Position = UDim2.new(0, 0, 0, 20)
+titleUguz.BackgroundTransparency = 1
+titleUguz.Text = "UguzHub"
+titleUguz.TextColor3 = Color3.fromRGB(255, 0, 0) -- Kırmızı Yazı
+titleUguz.TextScaled = true
+titleUguz.Font = Enum.Font.GothamBold
+titleUguz.Parent = loadingFrame
 
-    local function makeDraggable(object)
-        local dragging = false
-        local dragStart
-        local startPos
+local percentLabel = Instance.new("TextLabel")
+percentLabel.Size = UDim2.new(1, 0, 0, 40)
+percentLabel.Position = UDim2.new(0, 0, 0, 90)
+percentLabel.BackgroundTransparency = 1
+percentLabel.Text = "%0"
+percentLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+percentLabel.TextScaled = true
+percentLabel.Font = Enum.Font.Gotham
+percentLabel.Parent = loadingFrame
 
-        object.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                dragging = true
-                dragStart = input.Position
-                startPos = object.Position
-            end
-        end)
-
-        UIS.InputChanged:Connect(function(input)
-            if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-                local delta = input.Position - dragStart
-                object.Position = UDim2.new(
-                    startPos.X.Scale,
-                    startPos.X.Offset + delta.X,
-                    startPos.Y.Scale,
-                    startPos.Y.Offset + delta.Y
-                )
-            end
-        end)
-
-        UIS.InputEnded:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                dragging = false
-            end
-        end)
+-- 10 Saniyelik Rastgele Yükleme Algoritması
+task.spawn(function()
+    local current = 0
+    while current < 100 do
+        task.wait(math.random(3, 8) / 10)
+        current = math.min(100, current + math.random(8, 22))
+        percentLabel.Text = "%" .. tostring(current)
     end
-
+    task.wait(0.5)
+    loadingFrame:Destroy()
+    
+    -- Menüyü Başlat
+    InitMenu()
+end)
+-- ==========================================
+-- 4. ANA MENÜ VE TRADE VALUE SİSTEMİ
+-- ==========================================
+function InitMenu()
+    -- Açıkken SAĞDA (0.8, -150), Kapalıyken SOLDAN Buton (0.02, 0)
     local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0,300,0,210)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-    frame.BackgroundColor3 = Color3.fromRGB(35,35,35)
+    frame.Size = UDim2.new(0, 300, 0, 220)
+    frame.Position = UDim2.new(0.8, -150, 0.4, -110)
+    frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
     frame.Parent = gui
-    frame.Active = true
-
-    makeDraggable(frame)
-
-    local mini = Instance.new("TextButton")
-    mini.Size = UDim2.new(0,50,0,50)
-    mini.Position = frame.Position
-    mini.Text = "MM2"
-    mini.TextScaled = true
-    mini.Font = Enum.Font.GothamBold
-    mini.BackgroundColor3 = Color3.fromRGB(35,35,35)
-    mini.TextColor3 = Color3.new(1,1,1)
-    mini.Visible = false
-    mini.Parent = gui
-    mini.Active = true
-
-    makeDraggable(mini)
-
-    local normalSize = mini.Size
-
-    mini.MouseEnter:Connect(function()
-        TweenService:Create(mini, TweenInfo.new(0.15), {Size = UDim2.new(0,60,0,60)}):Play()
-    end)
-
-    mini.MouseLeave:Connect(function()
-        TweenService:Create(mini, TweenInfo.new(0.15), {Size = normalSize}):Play()
-    end)
-
-    local miniCorner = Instance.new("UICorner")
-    miniCorner.CornerRadius = UDim.new(0,12)
-    miniCorner.Parent = mini
-
-    local miniStroke = Instance.new("UIStroke")
-    miniStroke.Thickness = 2
-    miniStroke.Parent = mini
-
-    local miniGradient = Instance.new("UIGradient")
-    miniGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(0,255,170)),
-        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0,120,255)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(0,255,170))
-    }
-    miniGradient.Parent = miniStroke
-
-    TweenService:Create(
-        miniGradient,
-        TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1),
-        {Rotation = 360}
-    ):Play()
 
     local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0,12)
+    corner.CornerRadius = UDim.new(0, 12)
     corner.Parent = frame
 
     local stroke = Instance.new("UIStroke")
     stroke.Thickness = 2
     stroke.Parent = frame
+    applyRGB(stroke)
 
-    local gradient = Instance.new("UIGradient")
-    gradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(0,170,255)),
-        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(170,0,255)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(0,170,255))
-    }
-    gradient.Parent = stroke
+    -- Sol taraftaki Açma/Kapama Butonu (Kapalıyken SOLDAN Açılır)
+    local mini = Instance.new("TextButton")
+    mini.Size = UDim2.new(0, 50, 0, 50)
+    mini.Position = UDim2.new(0.02, 0, 0.45, 0)
+    mini.Text = "Uguz"
+    mini.TextScaled = true
+    mini.Font = Enum.Font.GothamBold
+    mini.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    mini.TextColor3 = Color3.fromRGB(255, 0, 0)
+    mini.Visible = false
+    mini.Parent = gui
 
-    local rotateTween = TweenService:Create(
-        gradient,
-        TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1),
-        {Rotation = 360}
-    )
-    rotateTween:Play()
+    local miniCorner = Instance.new("UICorner")
+    miniCorner.CornerRadius = UDim.new(0, 12)
+    miniCorner.Parent = mini
 
-    local shadow = Instance.new("UIStroke")
-    shadow.Thickness = 2
-    shadow.Color = Color3.fromRGB(80,80,80)
-    shadow.Transparency = 0.3
-    shadow.Parent = frame
+    local miniStroke = Instance.new("UIStroke")
+    miniStroke.Thickness = 2
+    miniStroke.Parent = mini
+    applyRGB(miniStroke)
 
     local title = Instance.new("TextLabel")
-    title.Size = UDim2.new(1,-100,0,40)
-    title.Position = UDim2.new(0,10,0,0)
+    title.Size = UDim2.new(1, -80, 0, 40)
+    title.Position = UDim2.new(0, 10, 0, 5)
     title.BackgroundTransparency = 1
-    title.Text = "MM2 Mobile Helper"
+    title.Text = "UguzHub | Calculator"
     title.TextScaled = true
     title.Font = Enum.Font.GothamBold
-    title.TextColor3 = Color3.new(1,1,1)
+    title.TextColor3 = Color3.fromRGB(255, 0, 0)
     title.Parent = frame
 
-    local close = Instance.new("TextButton")
-    close.Size = UDim2.new(0,35,0,35)
-    close.Position = UDim2.new(1,-40,0,5)
-    close.Text = "X"
-    close.TextScaled = true
-    close.Font = Enum.Font.GothamBold
-    close.BackgroundColor3 = Color3.fromRGB(220,60,60)
-    close.TextColor3 = Color3.new(1,1,1)
-    close.Parent = frame
-    close.MouseButton1Click:Connect(function()
-        gui:Destroy()
-    end)
-
     local minimize = Instance.new("TextButton")
-    minimize.Size = UDim2.new(0,35,0,35)
-    minimize.Position = UDim2.new(1,-80,0,5)
+    minimize.Size = UDim2.new(0, 30, 0, 30)
+    minimize.Position = UDim2.new(1, -35, 0, 8)
     minimize.Text = "-"
     minimize.TextScaled = true
     minimize.Font = Enum.Font.GothamBold
-    minimize.BackgroundColor3 = Color3.fromRGB(70,70,70)
-    minimize.TextColor3 = Color3.new(1,1,1)
+    minimize.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    minimize.TextColor3 = Color3.fromRGB(255, 255, 255)
+    minimize.Parent = frame
 
-  minimize.MouseButton1Click:Connect(function()
-        local tween = TweenService:Create(frame, TweenInfo.new(0.25), {Size = UDim2.new(0,0,0,0)})
-        tween:Play()
-        tween.Completed:Wait()
-
+    minimize.MouseButton1Click:Connect(function()
         frame.Visible = false
-        frame.Size = UDim2.new(0,300,0,210)
         mini.Visible = true
     end)
 
     mini.MouseButton1Click:Connect(function()
         mini.Visible = false
         frame.Visible = true
-        frame.Size = UDim2.new(0,0,0,0)
-
-        TweenService:Create(frame, TweenInfo.new(0.25), {Size = UDim2.new(0,300,0,210)}):Play()
     end)
 
-    local closeCorner = Instance.new("UICorner")
-    closeCorner.CornerRadius = UDim.new(0,8)
-    closeCorner.Parent = close
-
+    -- Arama Kutusu (Search Item)
     local search = Instance.new("TextBox")
-    search.Size = UDim2.new(0.9,0,0,40)
-    search.Position = UDim2.new(0.05,0,0,55)
+    search.Size = UDim2.new(0.9, 0, 0, 35)
+    search.Position = UDim2.new(0.05, 0, 0, 50)
     search.PlaceholderText = "Search item..."
     search.Text = ""
     search.TextScaled = true
     search.Font = Enum.Font.Gotham
-    search.BackgroundColor3 = Color3.fromRGB(55,55,55)
-    search.TextColor3 = Color3.new(1,1,1)
+    search.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    search.TextColor3 = Color3.new(1, 1, 1)
     search.Parent = frame
 
+    local searchCorner = Instance.new("UICorner")
+    searchCorner.CornerRadius = UDim.new(0, 8)
+    searchCorner.Parent = search
+
+    -- Sonuç Ekranı
     local result = Instance.new("TextLabel")
-    result.Size = UDim2.new(0.9,0,0,60)
-    result.Position = UDim2.new(0.05,0,0,110)
-    result.BackgroundColor3 = Color3.fromRGB(45,45,45)
-    result.TextColor3 = Color3.new(1,1,1)
+    result.Size = UDim2.new(0.9, 0, 0, 110)
+    result.Position = UDim2.new(0.05, 0, 0, 95)
+    result.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    result.TextColor3 = Color3.new(1, 1, 1)
     result.TextScaled = true
     result.TextWrapped = true
     result.Font = Enum.Font.Gotham
     result.Text = "Search an item..."
     result.Parent = frame
 
+    local resultCorner = Instance.new("UICorner")
+    resultCorner.CornerRadius = UDim.new(0, 8)
+    resultCorner.Parent = result
+
     search:GetPropertyChangedSignal("Text"):Connect(function()
         local query = string.lower(search.Text)
-
         if query == "" then
             result.Text = "Search an item..."
             return
@@ -432,25 +290,71 @@ local function CreateGUI(Values, Offers)
 
         for name, data in pairs(Values.Godlies) do
             if string.find(string.lower(name), query) then
-                result.Text =
-                    name ..
+                result.Text = name ..
                     "\nValue: " .. data.Value ..
-                    "\nDemand: " .. data.Demand ..
-                    " | Rarity: " .. data.Rarity ..
+                    "\nDemand: " .. data.Demand .. " | Rarity: " .. data.Rarity ..
                     "\nChange: " .. data.Change
                 return
             end
         end
-
         result.Text = "No item found"
     end)
 
-    local searchCorner = Instance.new("UICorner")
-    searchCorner.CornerRadius = UDim.new(0,8)
-    searchCorner.Parent = search
-end
+    -- ==========================================
+    -- 5. AUTOMATIC TRADE OVERLAY (TAKAS VALUES)
+    -- ==========================================
+    local PlayerGui = player:WaitForChild("PlayerGui")
+    
+    local function applyTradeOverlay()
+        local tradeGui = PlayerGui:FindFirstChild("TradeGui") or PlayerGui:FindFirstChild("TradeContainer")
+        if not tradeGui then return end
+        
+        local tradeFrame = tradeGui:FindFirstChild("TradeFrame") or tradeGui
+        local otherSlots = tradeFrame:FindFirstChild("OtherPlayerSlots") or tradeFrame:FindFirstChild("OtherSlots")
+        
+        if not otherSlots then return end
+        
+        local function checkSlot(slot)
+            local itemName = slot.Name
+            local data = Values.Godlies[itemName]
+            
+            if slot:FindFirstChild("ValueTag") then
+                slot.ValueTag:Destroy()
+            end
+            
+            if data then
+                local tag = Instance.new("TextLabel")
+                tag.Name = "ValueTag"
+                tag.Size = UDim2.new(1, 0, 0.35, 0)
+                tag.Position = UDim2.new(0, 0, 0.65, 0)
+                tag.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+                tag.BackgroundTransparency = 0.3
+                tag.TextColor3 = Color3.fromRGB(255, 215, 0) -- Altın Sarısı
+                tag.TextScaled = true
+                tag.Font = Enum.Font.SourceSansBold
+                tag.Text = "Val: " .. tostring(data.Value)
+                tag.ZIndex = 10
+                tag.Parent = slot
+            end
+        end
 
--- ==========================================
--- 4. BAŞLATICI
--- ==========================================
-CreateGUI(Values, Offers)
+        for _, slot in pairs(otherSlots:GetChildren()) do
+            slot.ChildAdded:Connect(function()
+                task.wait(0.1)
+                checkSlot(slot)
+            end)
+            slot.ChildRemoved:Connect(function()
+                if slot:FindFirstChild("ValueTag") then
+                    slot.ValueTag:Destroy()
+                end
+            end)
+        end
+    end
+
+    -- Oyundaki Trade UI değişimlerini dinle
+    task.spawn(function()
+        while task.wait(1) do
+            applyTradeOverlay()
+        end
+    end)
+end
