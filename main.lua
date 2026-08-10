@@ -1,360 +1,308 @@
 -- ==========================================
--- 1. VERİ TABANIN (Values)
+-- UGUZ HUB v2.0 - ADVANCED TRADE & VALUE SYSTEM
 -- ==========================================
-local Values = {
-    Godlies = {
-        ["Traveler's Gun"] = { Value = 5600, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 5, Change = "+100" },
-        ["Evergun"] = { Value = 3450, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 4, Change = "-25" },
-        ["Constellation"] = { Value = 2700, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 4, Change = "-25" },
-        ["Evergreen"] = { Value = 2500, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 4, Change = "-25" },
-        ["Turkey"] = { Value = 2450, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 4, Change = "-25" },
-        ["Vampire's Gun"] = { Value = 1950, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 4, Change = "+25" },
-        ["Alienbeam"] = { Value = 1850, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 4, Change = "-25" },
-        ["Darkshot"] = { Value = 1700, Range = "1700 - 1725", Stability = "Doing Well", Demand = 6, Rarity = 4, Change = "+25" },
-        ["Darksword"] = { Value = 1675, Range = "1675 - 1700", Stability = "Doing Well", Demand = 6, Rarity = 4, Change = "+25" },
-        ["Raygun"] = { Value = 1550, Range = "1550 - 1600", Stability = "Overpaid For", Demand = 6, Rarity = 3, Change = "+50" },
-        ["Blossom"] = { Value = 1330, Range = "1330 - 1350", Stability = "Doing Well", Demand = 6, Rarity = 4, Change = "+10" },
-        ["Sakura"] = { Value = 1320, Range = "1320 - 1340", Stability = "Doing Well", Demand = 6, Rarity = 4, Change = "+10" },
-        ["Sunrise"] = { Value = 1125, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 4, Change = "+25" },
-        ["Snowcannon"] = { Value = 850, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 3, Change = "+25" },
-        ["Bauble"] = { Value = 825, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 4, Change = "-25" },
-        ["Sunset"] = { Value = 625, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 3, Change = "+25" },
-        ["Soul"] = { Value = 615, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 3, Change = "+5" },
-        ["Spirit"] = { Value = 605, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 3, Change = "+5" },
-        ["Rainbow Gun"] = { Value = 420, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 3, Change = "+5" },
-        ["Flora"] = { Value = 410, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 3, Change = "+10" },
-        ["Rainbow"] = { Value = 410, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 3, Change = "+5" },
-        ["Bloom"] = { Value = 400, Range = "N/A", Stability = "Stable", Demand = 5, Rarity = 3, Change = "+10" },
-        ["Watergun"] = { Value = 250, Range = "N/A", Stability = "Stable", Demand = 3, Rarity = 3, Change = "-10" },
-        ["Icecream"] = { Value = 160, Range = "150 - 165", Stability = "Fluctuating", Demand = 3, Rarity = 3, Change = "-40" },
-        ["Treat"] = { Value = 155, Range = "N/A", Stability = "Stable", Demand = 3, Rarity = 3, Change = "-5" },
-        ["Beachy"] = { Value = 150, Range = "140 - 155", Stability = "Fluctuating", Demand = 3, Rarity = 3, Change = "-10" },
-        ["Sands"] = { Value = 150, Range = "140 - 155", Stability = "Fluctuating", Demand = 3, Rarity = 3, Change = "-10" },
-        ["Sweet"] = { Value = 150, Range = "N/A", Stability = "Stable", Demand = 3, Rarity = 3, Change = "-5" },
-        ["Borealis"] = { Value = 145, Range = "N/A", Stability = "Stable", Demand = 3, Rarity = 3, Change = "-5" },
-        ["Australis"] = { Value = 140, Range = "N/A", Stability = "Stable", Demand = 3, Rarity = 3, Change = "-5" },
-        ["Bat"] = { Value = 120, Range = "115 - 125", Stability = "Fluctuating", Demand = 2, Rarity = 2, Change = "-5" },
-        ["Pearlshine"] = { Value = 85, Range = "N/A", Stability = "Stable", Demand = 2, Rarity = 3, Change = "-5" },
-        ["Pearl"] = { Value = 80, Range = "N/A", Stability = "Stable", Demand = 2, Rarity = 3, Change = "-5" },
-        ["Candy"] = { Value = 80, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-5" },
-        ["Heartblade"] = { Value = 65, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Luger"] = { Value = 40, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Red Luger"] = { Value = 37, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-1" },
-        ["Phantom"] = { Value = 35, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Spectre"] = { Value = 35, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Candleflame"] = { Value = 33, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Darkbringer"] = { Value = 33, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Elderwood Blade"] = { Value = 33, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Elderwood Revolver"] = { Value = 33, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Iceblaster"] = { Value = 33, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Lightbringer"] = { Value = 33, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Makeshift"] = { Value = 33, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Sugar"] = { Value = 32, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-1" },
-        ["Ornament"] = { Value = 28, Range = "25 - 30", Stability = "Fluctuating", Demand = 1, Rarity = 2, Change = "+1" },
-        ["Green Luger"] = { Value = 23, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Amerilaser"] = { Value = 22, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-1" },
-        ["Laser"] = { Value = 22, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-1" },
-        ["Hallowgun"] = { Value = 20, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Nightblade"] = { Value = 20, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Shark"] = { Value = 20, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Icebeam"] = { Value = 18, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Pixel"] = { Value = 17, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-3" },
-        ["Ginger Luger"] = { Value = 17, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-3" },
-        ["Iceflake"] = { Value = 15, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Gemstone"] = { Value = 15, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Old Glory"] = { Value = 15, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Eternalcane"] = { Value = 13, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Deathshard"] = { Value = 13, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Jinglegun"] = { Value = 13, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Gingerblade"] = { Value = 13, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Lugercane"] = { Value = 13, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Bioblade"] = { Value = 8, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Eternal III"] = { Value = 8, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Eternal IV"] = { Value = 8, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Hallow's Blade"] = { Value = 8, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Hallow's Edge"] = { Value = 8, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Handsaw"] = { Value = 8, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Boneblade"] = { Value = 7, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Eternal"] = { Value = 7, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-1" },
-        ["Eternal II"] = { Value = 7, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-1" },
-        ["Frostbite"] = { Value = 7, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Ghostblade"] = { Value = 7, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Ice Dragon"] = { Value = 7, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-1" },
-        ["Ice Shard"] = { Value = 7, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-1" },
-        ["Prismatic"] = { Value = 7, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Pumpking"] = { Value = 7, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-1" },
-        ["Saw"] = { Value = 7, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Xmas"] = { Value = 7, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-1" },
-        ["Eggblade"] = { Value = 5, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Flames"] = { Value = 5, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Snowflake"] = { Value = 5, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Winter's Edge"] = { Value = 5, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "-2" },
-        ["Peppermint"] = { Value = 4, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Cookieblade"] = { Value = 3, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 2, Change = "0" },
-        ["Blue Seer"] = { Value = 3, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 1, Change = "0" },
-        ["Purple Seer"] = { Value = 3, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 1, Change = "0" },
-        ["Red Seer"] = { Value = 3, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 1, Change = "0" },
-        ["Seer"] = { Value = 3, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 1, Change = "0" },
-        ["Orange Seer"] = { Value = 2, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 1, Change = "0" },
-        ["Yellow Seer"] = { Value = 2, Range = "N/A", Stability = "Stable", Demand = 1, Rarity = 1, Change = "0" }
-    }
-}
 
--- ==========================================
--- 2. SERVİSLER VE ANA EKRAN DÜZENİ
--- ==========================================
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
-local UIS = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
 local player = Players.LocalPlayer
 
-local gui = Instance.new("ScreenGui")
-gui.Name = "UguzHub"
-gui.ResetOnSpawn = false
-gui.Parent = player:WaitForChild("PlayerGui")
+-- Var olan UI varsa temizle
+if CoreGui:FindFirstChild("UguzHubV2") then
+    CoreGui.UguzHubV2:Destroy()
+end
 
--- RGB Efekt Fonksiyonu
-local function applyRGB(stroke)
-    local gradient = Instance.new("UIGradient")
-    gradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255,0,0)),
-        ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0,255,0)),
-        ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0,0,255)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(255,0,0))
+local gui = Instance.new("ScreenGui")
+gui.Name = "UguzHubV2"
+gui.ResetOnSpawn = false
+gui.Parent = (gethui and gethui()) or CoreGui or player:WaitForChild("PlayerGui")
+
+-- ==========================================
+-- 1. VERİ TABANI (MM2 GODLIES / ANCIENT)
+-- ==========================================
+local Values = {
+    ["Traveler's Gun"] = 5600, ["Evergun"] = 3450, ["Constellation"] = 2700,
+    ["Evergreen"] = 2500, ["Turkey"] = 2450, ["Vampire's Gun"] = 1950,
+    ["Alienbeam"] = 1850, ["Darkshot"] = 1700, ["Darksword"] = 1675,
+    ["Raygun"] = 1550, ["Blossom"] = 1330, ["Sakura"] = 1320,
+    ["Sunrise"] = 1125, ["Snowcannon"] = 850, ["Bauble"] = 825,
+    ["Sunset"] = 625, ["Soul"] = 615, ["Spirit"] = 605,
+    ["Rainbow Gun"] = 420, ["Flora"] = 410, ["Rainbow"] = 410,
+    ["Bloom"] = 400, ["Watergun"] = 250, ["Icecream"] = 160,
+    ["Treat"] = 155, ["Beachy"] = 150, ["Sands"] = 150,
+    ["Sweet"] = 150, ["Borealis"] = 145, ["Australis"] = 140,
+    ["Bat"] = 120, ["Pearlshine"] = 85, ["Pearl"] = 80,
+    ["Candy"] = 80, ["Heartblade"] = 65, ["Luger"] = 40,
+    ["Red Luger"] = 37, ["Phantom"] = 35, ["Spectre"] = 35,
+    ["Candleflame"] = 33, ["Darkbringer"] = 33, ["Elderwood Blade"] = 33,
+    ["Elderwood Revolver"] = 33, ["Iceblaster"] = 33, ["Lightbringer"] = 33,
+    ["Makeshift"] = 33, ["Sugar"] = 32, ["Green Luger"] = 23,
+    ["Laser"] = 22, ["Amerilaser"] = 22, ["Hallowgun"] = 20,
+    ["Nightblade"] = 20, ["Shark"] = 20, ["Icebeam"] = 18,
+    ["Pixel"] = 17, ["Ginger Luger"] = 17, ["Iceflake"] = 15,
+    ["Gemstone"] = 15, ["Bioblade"] = 8, ["Seer"] = 3
+}
+
+local function applyGradient(instance)
+    local uig = Instance.new("UIGradient")
+    uig.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 128)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(120, 0, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 230, 255))
     }
-    gradient.Parent = stroke
-    TweenService:Create(gradient, TweenInfo.new(2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1), {Rotation = 360}):Play()
+    uig.Parent = instance
+    return uig
 end
 
 -- ==========================================
--- 3. YÜKLENME EKRANI (10 Saniyelik RGB)
+-- 2. GELİŞMİŞ MODERN GİRİŞ EKRANI
 -- ==========================================
-local loadingFrame = Instance.new("Frame")
-loadingFrame.Size = UDim2.new(0, 320, 0, 180)
-loadingFrame.Position = UDim2.new(0.5, -160, 0.5, -90)
-loadingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Siyah Arka Plan
-loadingFrame.Parent = gui
+local loaderFrame = Instance.new("Frame")
+loaderFrame.Size = UDim2.new(0, 380, 0, 220)
+loaderFrame.Position = UDim2.new(0.5, -190, 0.5, -110)
+loaderFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+loaderFrame.BorderSizePixel = 0
+loaderFrame.Parent = gui
 
-local lCorner = Instance.new("UICorner")
-lCorner.CornerRadius = UDim.new(0, 12)
-lCorner.Parent = loadingFrame
+local lCorner = Instance.new("UICorner", loaderFrame)
+lCorner.CornerRadius = UDim.new(0, 16)
 
-local lStroke = Instance.new("UIStroke")
-lStroke.Thickness = 3
-lStroke.Parent = loadingFrame
-applyRGB(lStroke)
+local lStroke = Instance.new("UIStroke", loaderFrame)
+lStroke.Thickness = 2
+applyGradient(lStroke)
 
-local titleUguz = Instance.new("TextLabel")
-titleUguz.Size = UDim2.new(1, 0, 0, 50)
-titleUguz.Position = UDim2.new(0, 0, 0, 20)
-titleUguz.BackgroundTransparency = 1
-titleUguz.Text = "UguzHub"
-titleUguz.TextColor3 = Color3.fromRGB(255, 0, 0) -- Kırmızı Yazı
-titleUguz.TextScaled = true
-titleUguz.Font = Enum.Font.GothamBold
-titleUguz.Parent = loadingFrame
+local hubTitle = Instance.new("TextLabel", loaderFrame)
+hubTitle.Size = UDim2.new(1, 0, 0, 50)
+hubTitle.Position = UDim2.new(0, 0, 0, 25)
+hubTitle.BackgroundTransparency = 1
+hubTitle.Text = "UGUZ HUB"
+hubTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+hubTitle.TextSize = 28
+hubTitle.Font = Enum.Font.FredokaOne
+applyGradient(hubTitle)
 
-local percentLabel = Instance.new("TextLabel")
-percentLabel.Size = UDim2.new(1, 0, 0, 40)
-percentLabel.Position = UDim2.new(0, 0, 0, 90)
-percentLabel.BackgroundTransparency = 1
-percentLabel.Text = "%0"
-percentLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-percentLabel.TextScaled = true
-percentLabel.Font = Enum.Font.Gotham
-percentLabel.Parent = loadingFrame
+local statusLabel = Instance.new("TextLabel", loaderFrame)
+statusLabel.Size = UDim2.new(1, 0, 0, 25)
+statusLabel.Position = UDim2.new(0, 0, 0, 80)
+statusLabel.BackgroundTransparency = 1
+statusLabel.Text = "Veritabanı ve Trade modülleri yükleniyor..."
+statusLabel.TextColor3 = Color3.fromRGB(180, 180, 200)
+statusLabel.TextSize = 13
+statusLabel.Font = Enum.Font.GothamMedium
 
--- 10 Saniyelik Rastgele Yükleme Algoritması
+local barBackground = Instance.new("Frame", loaderFrame)
+barBackground.Size = UDim2.new(0.8, 0, 0, 10)
+barBackground.Position = UDim2.new(0.1, 0, 0, 125)
+barBackground.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+Instance.new("UICorner", barBackground).CornerRadius = UDim.new(1, 0)
+
+local barFill = Instance.new("Frame", barBackground)
+barFill.Size = UDim2.new(0, 0, 1, 0)
+barFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", barFill).CornerRadius = UDim.new(1, 0)
+applyGradient(barFill)
+
+local percentText = Instance.new("TextLabel", loaderFrame)
+percentText.Size = UDim2.new(1, 0, 0, 30)
+percentText.Position = UDim2.new(0, 0, 0, 145)
+percentText.BackgroundTransparency = 1
+percentText.Text = "%0"
+percentText.TextColor3 = Color3.fromRGB(255, 255, 255)
+percentText.TextSize = 16
+percentText.Font = Enum.Font.GothamBold
+
+-- Yüklenme Efekti
 task.spawn(function()
-    local current = 0
-    while current < 100 do
-        task.wait(math.random(3, 8) / 10)
-        current = math.min(100, current + math.random(8, 22))
-        percentLabel.Text = "%" .. tostring(current)
+    for i = 1, 100 do
+        barFill.Size = UDim2.new(i / 100, 0, 1, 0)
+        percentText.Text = "%" .. i
+        if i == 30 then statusLabel.Text = "MM2 Arayüzü taranıyor..." end
+        if i == 70 then statusLabel.Text = "Değer listesi senkronize ediliyor..." end
+        task.wait(0.02)
     end
-    task.wait(0.5)
-    loadingFrame:Destroy()
-    
-    -- Menüyü Başlat
-    InitMenu()
+    statusLabel.Text = "Hazır!"
+    task.wait(0.4)
+    TweenService:Create(loaderFrame, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
+    loaderFrame:Destroy()
+    InitMainHub()
 end)
+
 -- ==========================================
--- 4. ANA MENÜ VE TRADE VALUE SİSTEMİ
+-- 3. GELİŞMİŞ ANA MENÜ VE TRADE ANALİZ PANELİ
 -- ==========================================
-function InitMenu()
-    -- Açıkken SAĞDA (0.8, -150), Kapalıyken SOLDAN Buton (0.02, 0)
-    local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 300, 0, 220)
-    frame.Position = UDim2.new(0.8, -150, 0.4, -110)
-    frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    frame.Parent = gui
+function InitMainHub()
+    -- Ana Menü
+    local mainFrame = Instance.new("Frame", gui)
+    mainFrame.Size = UDim2.new(0, 340, 0, 260)
+    mainFrame.Position = UDim2.new(0.05, 0, 0.3, 0)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 26)
+    mainFrame.BorderSizePixel = 0
+    mainFrame.Active = true
+    mainFrame.Draggable = true
 
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 12)
-    corner.Parent = frame
+    Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 14)
+    local mainStroke = Instance.new("UIStroke", mainFrame)
+    mainStroke.Thickness = 2
+    applyGradient(mainStroke)
 
-    local stroke = Instance.new("UIStroke")
-    stroke.Thickness = 2
-    stroke.Parent = frame
-    applyRGB(stroke)
+    local header = Instance.new("TextLabel", mainFrame)
+    header.Size = UDim2.new(1, -40, 0, 45)
+    header.Position = UDim2.new(0, 15, 0, 0)
+    header.BackgroundTransparency = 1
+    header.Text = "UGUZ HUB | Trade Assistant"
+    header.TextColor3 = Color3.fromRGB(255, 255, 255)
+    header.TextSize = 16
+    header.Font = Enum.Font.GothamBold
+    header.TextXAlignment = Enum.TextXAlignment.Left
 
-    -- Sol taraftaki Açma/Kapama Butonu (Kapalıyken SOLDAN Açılır)
-    local mini = Instance.new("TextButton")
-    mini.Size = UDim2.new(0, 50, 0, 50)
-    mini.Position = UDim2.new(0.02, 0, 0.45, 0)
-    mini.Text = "Uguz"
-    mini.TextScaled = true
-    mini.Font = Enum.Font.GothamBold
-    mini.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    mini.TextColor3 = Color3.fromRGB(255, 0, 0)
-    mini.Visible = false
-    mini.Parent = gui
+    local searchBox = Instance.new("TextBox", mainFrame)
+    searchBox.Size = UDim2.new(0.9, 0, 0, 36)
+    searchBox.Position = UDim2.new(0.05, 0, 0, 50)
+    searchBox.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+    searchBox.PlaceholderText = "Eşya ara (ör: Bat, Gemstone)..."
+    searchBox.Text = ""
+    searchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    searchBox.Font = Enum.Font.Gotham
+    searchBox.TextSize = 14
+    Instance.new("UICorner", searchBox).CornerRadius = UDim.new(0, 8)
 
-    local miniCorner = Instance.new("UICorner")
-    miniCorner.CornerRadius = UDim.new(0, 12)
-    miniCorner.Parent = mini
+    local infoDisplay = Instance.new("TextLabel", mainFrame)
+    infoDisplay.Size = UDim2.new(0.9, 0, 0, 145)
+    infoDisplay.Position = UDim2.new(0.05, 0, 0, 95)
+    infoDisplay.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
+    infoDisplay.TextColor3 = Color3.fromRGB(220, 220, 220)
+    infoDisplay.Font = Enum.Font.Gotham
+    infoDisplay.TextSize = 14
+    infoDisplay.Text = "Aramak istediğiniz silahın adını yazın.\nTakasa girdiğinizde değerler otomatik hesaplanır."
+    infoDisplay.TextWrapped = true
+    Instance.new("UICorner", infoDisplay).CornerRadius = UDim.new(0, 8)
 
-    local miniStroke = Instance.new("UIStroke")
-    miniStroke.Thickness = 2
-    miniStroke.Parent = mini
-    applyRGB(miniStroke)
-
-    local title = Instance.new("TextLabel")
-    title.Size = UDim2.new(1, -80, 0, 40)
-    title.Position = UDim2.new(0, 10, 0, 5)
-    title.BackgroundTransparency = 1
-    title.Text = "UguzHub | Calculator"
-    title.TextScaled = true
-    title.Font = Enum.Font.GothamBold
-    title.TextColor3 = Color3.fromRGB(255, 0, 0)
-    title.Parent = frame
-
-    local minimize = Instance.new("TextButton")
-    minimize.Size = UDim2.new(0, 30, 0, 30)
-    minimize.Position = UDim2.new(1, -35, 0, 8)
-    minimize.Text = "-"
-    minimize.TextScaled = true
-    minimize.Font = Enum.Font.GothamBold
-    minimize.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    minimize.TextColor3 = Color3.fromRGB(255, 255, 255)
-    minimize.Parent = frame
-
-    minimize.MouseButton1Click:Connect(function()
-        frame.Visible = false
-        mini.Visible = true
-    end)
-
-    mini.MouseButton1Click:Connect(function()
-        mini.Visible = false
-        frame.Visible = true
-    end)
-
-    -- Arama Kutusu (Search Item)
-    local search = Instance.new("TextBox")
-    search.Size = UDim2.new(0.9, 0, 0, 35)
-    search.Position = UDim2.new(0.05, 0, 0, 50)
-    search.PlaceholderText = "Search item..."
-    search.Text = ""
-    search.TextScaled = true
-    search.Font = Enum.Font.Gotham
-    search.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    search.TextColor3 = Color3.new(1, 1, 1)
-    search.Parent = frame
-
-    local searchCorner = Instance.new("UICorner")
-    searchCorner.CornerRadius = UDim.new(0, 8)
-    searchCorner.Parent = search
-
-    -- Sonuç Ekranı
-    local result = Instance.new("TextLabel")
-    result.Size = UDim2.new(0.9, 0, 0, 110)
-    result.Position = UDim2.new(0.05, 0, 0, 95)
-    result.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    result.TextColor3 = Color3.new(1, 1, 1)
-    result.TextScaled = true
-    result.TextWrapped = true
-    result.Font = Enum.Font.Gotham
-    result.Text = "Search an item..."
-    result.Parent = frame
-
-    local resultCorner = Instance.new("UICorner")
-    resultCorner.CornerRadius = UDim.new(0, 8)
-    resultCorner.Parent = result
-
-    search:GetPropertyChangedSignal("Text"):Connect(function()
-        local query = string.lower(search.Text)
-        if query == "" then
-            result.Text = "Search an item..."
+    searchBox:GetPropertyChangedSignal("Text"):Connect(function()
+        local q = string.lower(searchBox.Text)
+        if q == "" then
+            infoDisplay.Text = "Aramak istediğiniz silahın adını yazın."
             return
         end
-
-        for name, data in pairs(Values.Godlies) do
-            if string.find(string.lower(name), query) then
-                result.Text = name ..
-                    "\nValue: " .. data.Value ..
-                    "\nDemand: " .. data.Demand .. " | Rarity: " .. data.Rarity ..
-                    "\nChange: " .. data.Change
+        for item, val in pairs(Values) do
+            if string.find(string.lower(item), q) then
+                infoDisplay.Text = "Eşya: " .. item .. "\n\nDeğer (Value): " .. tostring(val)
                 return
             end
         end
-        result.Text = "No item found"
+        infoDisplay.Text = "Aramaya uygun eşya bulunamadı."
     end)
 
     -- ==========================================
-    -- 5. AUTOMATIC TRADE OVERLAY (TAKAS VALUES)
+    -- 4. CANLI TRADE VALUE & W/F/L SİSTEMİ
     -- ==========================================
-    local PlayerGui = player:WaitForChild("PlayerGui")
-    
-    local function applyTradeOverlay()
-        local tradeGui = PlayerGui:FindFirstChild("TradeGui") or PlayerGui:FindFirstChild("TradeContainer")
-        if not tradeGui then return end
-        
-        local tradeFrame = tradeGui:FindFirstChild("TradeFrame") or tradeGui
-        local otherSlots = tradeFrame:FindFirstChild("OtherPlayerSlots") or tradeFrame:FindFirstChild("OtherSlots")
-        
-        if not otherSlots then return end
-        
-        local function checkSlot(slot)
-            local itemName = slot.Name
-            local data = Values.Godlies[itemName]
-            
-            if slot:FindFirstChild("ValueTag") then
-                slot.ValueTag:Destroy()
-            end
-            
-            if data then
-                local tag = Instance.new("TextLabel")
-                tag.Name = "ValueTag"
-                tag.Size = UDim2.new(1, 0, 0.35, 0)
-                tag.Position = UDim2.new(0, 0, 0.65, 0)
-                tag.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-                tag.BackgroundTransparency = 0.3
-                tag.TextColor3 = Color3.fromRGB(255, 215, 0) -- Altın Sarısı
-                tag.TextScaled = true
-                tag.Font = Enum.Font.SourceSansBold
-                tag.Text = "Val: " .. tostring(data.Value)
-                tag.ZIndex = 10
-                tag.Parent = slot
+    local tradeWFLFrame = Instance.new("Frame", gui)
+    tradeWFLFrame.Size = UDim2.new(0, 360, 0, 80)
+    tradeWFLFrame.Position = UDim2.new(0.5, -180, 0.85, 0)
+    tradeWFLFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 22)
+    tradeWFLFrame.Visible = false
+    Instance.new("UICorner", tradeWFLFrame).CornerRadius = UDim.new(0, 12)
+    local wflStroke = Instance.new("UIStroke", tradeWFLFrame)
+    wflStroke.Thickness = 2
+    wflStroke.Color = Color3.fromRGB(255, 215, 0)
+
+    local wflStatus = Instance.new("TextLabel", tradeWFLFrame)
+    wflStatus.Size = UDim2.new(1, 0, 0, 35)
+    wflStatus.Position = UDim2.new(0, 0, 0, 5)
+    wflStatus.BackgroundTransparency = 1
+    wflStatus.Text = "TRADE ANALİZİ"
+    wflStatus.Font = Enum.Font.FredokaOne
+    wflStatus.TextSize = 22
+    wflStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    local wflDetails = Instance.new("TextLabel", tradeWFLFrame)
+    wflDetails.Size = UDim2.new(1, 0, 0, 30)
+    wflDetails.Position = UDim2.new(0, 0, 0, 40)
+    wflDetails.BackgroundTransparency = 1
+    wflDetails.Text = "Sen: 0 | Karşı: 0"
+    wflDetails.Font = Enum.Font.GothamBold
+    wflDetails.TextSize = 14
+    wflDetails.TextColor3 = Color3.fromRGB(200, 200, 200)
+
+    -- Slot Değer Taraftarı & Hesaplayıcı
+    local function getItemValue(slot)
+        for _, desc in pairs(slot:GetDescendants()) do
+            if desc:IsA("TextLabel") or desc:IsA("TextBox") then
+                if Values[desc.Text] then return Values[desc.Text] end
+            elseif desc:IsA("ImageLabel") or desc:IsA("ImageButton") then
+                if Values[desc.Name] then return Values[desc.Name] end
             end
         end
+        if Values[slot.Name] then return Values[slot.Name] end
+        return 0
+    end
 
-        for _, slot in pairs(otherSlots:GetChildren()) do
-            slot.ChildAdded:Connect(function()
-                task.wait(0.1)
-                checkSlot(slot)
-            end)
-            slot.ChildRemoved:Connect(function()
-                if slot:FindFirstChild("ValueTag") then
-                    slot.ValueTag:Destroy()
-                end
-            end)
+    local function attachOverlay(slot, val)
+        if slot:FindFirstChild("ValTag") then slot.ValTag:Destroy() end
+        if val > 0 then
+            local tag = Instance.new("TextLabel")
+            tag.Name = "ValTag"
+            tag.Size = UDim2.new(0.9, 0, 0.3, 0)
+            tag.Position = UDim2.new(0.05, 0, 0.35, 0)
+            tag.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+            tag.BackgroundTransparency = 0.2
+            tag.TextColor3 = Color3.fromRGB(255, 215, 0)
+            tag.Font = Enum.Font.FredokaOne
+            tag.TextSize = 14
+            tag.Text = "VAL: " .. val
+            tag.ZIndex = 100
+            Instance.new("UICorner", tag).CornerRadius = UDim.new(0, 6)
+            tag.Parent = slot
         end
     end
 
-    -- Oyundaki Trade UI değişimlerini dinle
+    -- Trade Tarama Döngüsü
     task.spawn(function()
-        while task.wait(1) do
-            applyTradeOverlay()
+        local PlayerGui = player:WaitForChild("PlayerGui")
+        while task.wait(0.3) do
+            local tradeGui = PlayerGui:FindFirstChild("TradeContainer", true) or PlayerGui:FindFirstChild("TradeFrame", true) or PlayerGui:FindFirstChild("TradeGui", true)
+            
+            if tradeGui and tradeGui.Visible then
+                tradeWFLFrame.Visible = true
+                
+                local myValue = 0
+                local opponentValue = 0
+
+                -- Slot Yapılarını Dinamik Tara
+                for _, obj in pairs(tradeGui:GetDescendants()) do
+                    if obj:IsA("Frame") or obj:IsA("ImageLabel") or obj:IsA("ImageButton") then
+                        local val = getItemValue(obj)
+                        if val > 0 then
+                            attachOverlay(obj, val)
+                            
+                            -- Hangi Tarafın Kutusu Olduğunu Tespit Et
+                            local pName = string.lower(obj:GetFullName())
+                            if string.find(pName, "my") or string.find(pName, "your") or string.find(pName, "container1") then
+                                myValue = myValue + val
+                            else
+                                opponentValue = opponentValue + val
+                            end
+                        end
+                    end
+                end
+
+                -- W/F/L Hesaplama Logiği
+                wflDetails.Text = "Senin Teklifin: " .. myValue .. " | Karşı Taraf: " .. opponentValue
+                if myValue == 0 and opponentValue == 0 then
+                    wflStatus.Text = "EŞYA BEKLENİYOR"
+                    wflStatus.TextColor3 = Color3.fromRGB(200, 200, 200)
+                elseif opponentValue > myValue then
+                    wflStatus.Text = "WIN (KÂRDASIN)"
+                    wflStatus.TextColor3 = Color3.fromRGB(50, 255, 100)
+                elseif opponentValue == myValue or math.abs(opponentValue - myValue) <= 5 then
+                    wflStatus.Text = "FAIR (EŞİT TRADE)"
+                    wflStatus.TextColor3 = Color3.fromRGB(255, 215, 0)
+                else
+                    wflStatus.Text = "LOSE (ZARARDASIN)"
+                    wflStatus.TextColor3 = Color3.fromRGB(255, 50, 50)
+                end
+            else
+                tradeWFLFrame.Visible = false
+            end
         end
     end)
 end
