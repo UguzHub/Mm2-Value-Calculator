@@ -453,4 +453,4 @@ end
 -- ==========================================
 -- 4. BAŞLATICI
 -- ==========================================
-CreateGUI(Values, Offers
+CreateGUI(Values, Offers)
