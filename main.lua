@@ -1,308 +1,368 @@
 -- ==========================================
--- UGUZ HUB v2.0 - ADVANCED TRADE & VALUE SYSTEM
+-- UGUZHUB PRO - COMPLETE TRADE CALCULATOR
 -- ==========================================
 
 local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
-local CoreGui = game:GetService("CoreGui")
+local RunService = game:GetService("RunService")
 local player = Players.LocalPlayer
+local pgui = player:WaitForChild("PlayerGui")
 
--- Var olan UI varsa temizle
-if CoreGui:FindFirstChild("UguzHubV2") then
-    CoreGui.UguzHubV2:Destroy()
-end
+-- 1. VERİ TABANI (WEAPONS_DATA)
+local WEAPONS_DATA = {
+    -- UNIQUES
+    {name = "Corrupt", type = "Unique", weapon = "🔫", value = "460", demand = "4", rarity = "3", change = "(-10) -2.1%"},
+    {name = "slouse's Clown (Gun)", type = "Unique", weapon = "🔫", value = "Priceless", demand = "11", rarity = "0", change = "N/A"},
+    {name = "slouse's Clown (Knife)", type = "Unique", weapon = "🔪", value = "Priceless", demand = "11", rarity = "0", change = "N/A"},
+    {name = "Sharkseeker", type = "Unique", weapon = "🔪", value = "N/A", demand = "0", rarity = "6", change = "N/A"},
+    {name = "Dartbringer", type = "Unique", weapon = "🔫", value = "N/A", demand = "0", rarity = "7", change = "N/A"},
+    {name = "Gold Candy", type = "Unique", weapon = "🔪", value = "Priceless", demand = "0", rarity = "0", change = "N/A"},
+    
+    -- ANCIENTS
+    {name = "Nik's Scythe", type = "Ancient", weapon = "🔪", value = "Priceless", demand = "11", rarity = "0", change = "N/A"},
+    {name = "Gingerscope", type = "Ancient", weapon = "🔫", value = "17,750", demand = "6", rarity = "0", change = "(+250) +1.4%"},
+    {name = "Traveler's Axe", type = "Ancient", weapon = "🔪", value = "8,100", demand = "5", rarity = "0", change = "(-100) -1.2%"},
+    {name = "Celestial", type = "Ancient", weapon = "🔪", value = "2,225", demand = "6", rarity = "0", change = "(+50) +2.3%"},
+    {name = "Vampire's Axe", type = "Ancient", weapon = "🔪", value = "1,225", demand = "5", rarity = "0", change = "(+25) +2.1%"},
+    {name = "Harvester", type = "Ancient", weapon = "🔪", value = "250", demand = "3", rarity = "0", change = "(-10) -3.8%"},
+    {name = "Icepiercer", type = "Ancient", weapon = "🔪", value = "160", demand = "3", rarity = "0", change = "(-10) -5.9%"},
+    {name = "Icebreaker", type = "Ancient", weapon = "🔪", value = "65", demand = "1", rarity = "0", change = "(-2) -3.0%"},
+    {name = "Batwing", type = "Ancient", weapon = "🔪", value = "42", demand = "1", rarity = "0", change = "(-1) -2.3%"},
+    {name = "Elderwood Scythe", type = "Ancient", weapon = "🔪", value = "38", demand = "1", rarity = "0", change = "(-2) -5.0%"},
+    {name = "Swirly Axe", type = "Ancient", weapon = "🔪", value = "38", demand = "1", rarity = "0", change = "(-2) -5.0%"},
+    {name = "Hallowscythe", type = "Ancient", weapon = "🔪", value = "30", demand = "1", rarity = "0", change = "(-2) -6.3%"},
+    {name = "Logchopper", type = "Ancient", weapon = "🔪", value = "18", demand = "1", rarity = "0", change = "(-2) -10.0%"},
+    {name = "Icewing", type = "Ancient", weapon = "🔪", value = "13", demand = "2", rarity = "0", change = "(-2) -13.3%"},
+    
+    -- VINTAGES
+    {name = "Blood", type = "Vintage", weapon = "🔪", value = "8", demand = "1", rarity = "0", change = "(+0)"},
+    {name = "Ghost (Vintage)", type = "Vintage", weapon = "🔪", value = "8", demand = "1", rarity = "0", change = "(-2) -20.0%"},
+    {name = "Laser (Vintage)", type = "Vintage", weapon = "🔫", value = "8", demand = "1", rarity = "0", change = "(+0)"},
+    {name = "America", type = "Vintage", weapon = "🔪", value = "7", demand = "1", rarity = "0", change = "(+0)"},
+    {name = "Prince", type = "Vintage", weapon = "🔪", value = "6", demand = "1", rarity = "0", change = "(+0)"},
+    {name = "Shadow", type = "Vintage", weapon = "🔪", value = "6", demand = "1", rarity = "0", change = "(+0)"},
+    {name = "Phaser", type = "Vintage", weapon = "🔫", value = "5", demand = "1", rarity = "0", change = "(+0)"},
+    {name = "Cowboy", type = "Vintage", weapon = "🔪", value = "4", demand = "1", rarity = "0", change = "(-1) -20.0%"},
+    {name = "Golden", type = "Vintage", weapon = "🔪", value = "4", demand = "1", rarity = "0", change = "(+0)"},
+    {name = "Splitter", type = "Vintage", weapon = "🔪", value = "3", demand = "1", rarity = "0", change = "(+0)"},
 
-local gui = Instance.new("ScreenGui")
-gui.Name = "UguzHubV2"
-gui.ResetOnSpawn = false
-gui.Parent = (gethui and gethui()) or CoreGui or player:WaitForChild("PlayerGui")
-
--- ==========================================
--- 1. VERİ TABANI (MM2 GODLIES / ANCIENT)
--- ==========================================
-local Values = {
-    ["Traveler's Gun"] = 5600, ["Evergun"] = 3450, ["Constellation"] = 2700,
-    ["Evergreen"] = 2500, ["Turkey"] = 2450, ["Vampire's Gun"] = 1950,
-    ["Alienbeam"] = 1850, ["Darkshot"] = 1700, ["Darksword"] = 1675,
-    ["Raygun"] = 1550, ["Blossom"] = 1330, ["Sakura"] = 1320,
-    ["Sunrise"] = 1125, ["Snowcannon"] = 850, ["Bauble"] = 825,
-    ["Sunset"] = 625, ["Soul"] = 615, ["Spirit"] = 605,
-    ["Rainbow Gun"] = 420, ["Flora"] = 410, ["Rainbow"] = 410,
-    ["Bloom"] = 400, ["Watergun"] = 250, ["Icecream"] = 160,
-    ["Treat"] = 155, ["Beachy"] = 150, ["Sands"] = 150,
-    ["Sweet"] = 150, ["Borealis"] = 145, ["Australis"] = 140,
-    ["Bat"] = 120, ["Pearlshine"] = 85, ["Pearl"] = 80,
-    ["Candy"] = 80, ["Heartblade"] = 65, ["Luger"] = 40,
-    ["Red Luger"] = 37, ["Phantom"] = 35, ["Spectre"] = 35,
-    ["Candleflame"] = 33, ["Darkbringer"] = 33, ["Elderwood Blade"] = 33,
-    ["Elderwood Revolver"] = 33, ["Iceblaster"] = 33, ["Lightbringer"] = 33,
-    ["Makeshift"] = 33, ["Sugar"] = 32, ["Green Luger"] = 23,
-    ["Laser"] = 22, ["Amerilaser"] = 22, ["Hallowgun"] = 20,
-    ["Nightblade"] = 20, ["Shark"] = 20, ["Icebeam"] = 18,
-    ["Pixel"] = 17, ["Ginger Luger"] = 17, ["Iceflake"] = 15,
-    ["Gemstone"] = 15, ["Bioblade"] = 8, ["Seer"] = 3
+    -- CHROMAS
+    {name = "C. Traveler's Gun", type = "Chroma", weapon = "🔫", value = "220,000", demand = "9", rarity = "0", change = "(-5,000) -2.2%"},
+    {name = "Chroma Evergun", type = "Chroma", weapon = "🔫", value = "75,000", demand = "8", rarity = "0", change = "(-1,000) -1.3%"},
+    {name = "Chroma Evergreen", type = "Chroma", weapon = "🔪", value = "49,000", demand = "7", rarity = "0", change = "(-1,000) -2.0%"},
+    {name = "Chroma Bauble", type = "Chroma", weapon = "🔪", value = "34,000", demand = "7", rarity = "0", change = "(-1,000) -2.9%"},
+    {name = "C. Vampire's Gun", type = "Chroma", weapon = "🔫", value = "29,000", demand = "6", rarity = "0", change = "(+0)"}
 }
 
-local function applyGradient(instance)
-    local uig = Instance.new("UIGradient")
-    uig.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 128)),
-        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(120, 0, 255)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 230, 255))
-    }
-    uig.Parent = instance
-    return uig
+-- 2. GUI KURULUMU
+local uguzHubGui = Instance.new("ScreenGui")
+uguzHubGui.Name = "UguzHub_Pro"
+uguzHubGui.ResetOnSpawn = false
+uguzHubGui.Parent = pgui
+
+local function applyRGB(object)
+	local hue = 0
+	RunService.RenderStepped:Connect(function()
+		hue = (hue + 0.008) % 1
+		object.TextColor3 = Color3.fromHSV(hue, 1, 1)
+	end)
 end
 
--- ==========================================
--- 2. GELİŞMİŞ MODERN GİRİŞ EKRANI
--- ==========================================
-local loaderFrame = Instance.new("Frame")
-loaderFrame.Size = UDim2.new(0, 380, 0, 220)
-loaderFrame.Position = UDim2.new(0.5, -190, 0.5, -110)
-loaderFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-loaderFrame.BorderSizePixel = 0
-loaderFrame.Parent = gui
+-- 3. GİRİŞ EKRANI
+local loginScreen = Instance.new("Frame")
+loginScreen.Size = UDim2.new(1, 0, 1, 0)
+loginScreen.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+loginScreen.BorderSizePixel = 0
+loginScreen.Parent = uguzHubGui
 
-local lCorner = Instance.new("UICorner", loaderFrame)
-lCorner.CornerRadius = UDim.new(0, 16)
+local titleFrame = Instance.new("Frame")
+titleFrame.Size = UDim2.new(0, 0, 0, 0)
+titleFrame.Position = UDim2.new(0.5, 0, 0.4, 0)
+titleFrame.BackgroundTransparency = 1
+titleFrame.Parent = loginScreen
 
-local lStroke = Instance.new("UIStroke", loaderFrame)
-lStroke.Thickness = 2
-applyGradient(lStroke)
+local textUgu = Instance.new("TextLabel")
+textUgu.Text = "Ugu"
+textUgu.Size = UDim2.new(0.5, 0, 1, 0)
+textUgu.Font = Enum.Font.FredokaOne
+textUgu.TextSize = 65
+textUgu.TextXAlignment = Enum.TextXAlignment.Right
+textUgu.BackgroundTransparency = 1
+textUgu.Parent = titleFrame
+applyRGB(textUgu)
 
-local hubTitle = Instance.new("TextLabel", loaderFrame)
-hubTitle.Size = UDim2.new(1, 0, 0, 50)
-hubTitle.Position = UDim2.new(0, 0, 0, 25)
-hubTitle.BackgroundTransparency = 1
-hubTitle.Text = "UGUZ HUB"
-hubTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-hubTitle.TextSize = 28
-hubTitle.Font = Enum.Font.FredokaOne
-applyGradient(hubTitle)
+local textHub = Instance.new("TextLabel")
+textHub.Text = "Hub"
+textHub.Size = UDim2.new(0.5, 0, 1, 0)
+textHub.Position = UDim2.new(0.5, 0, 0, 0)
+textHub.Font = Enum.Font.FredokaOne
+textHub.TextSize = 65
+textHub.TextXAlignment = Enum.TextXAlignment.Left
+textHub.BackgroundTransparency = 1
+textHub.Parent = titleFrame
+applyRGB(textHub)
 
-local statusLabel = Instance.new("TextLabel", loaderFrame)
-statusLabel.Size = UDim2.new(1, 0, 0, 25)
-statusLabel.Position = UDim2.new(0, 0, 0, 80)
-statusLabel.BackgroundTransparency = 1
-statusLabel.Text = "Veritabanı ve Trade modülleri yükleniyor..."
-statusLabel.TextColor3 = Color3.fromRGB(180, 180, 200)
-statusLabel.TextSize = 13
-statusLabel.Font = Enum.Font.GothamMedium
+local underline = Instance.new("Frame")
+underline.Size = UDim2.new(0, 0, 0, 4)
+underline.Position = UDim2.new(0.5, 0, 1, -5)
+underline.BorderSizePixel = 0
+underline.Parent = titleFrame
+applyRGB(underline)
 
-local barBackground = Instance.new("Frame", loaderFrame)
-barBackground.Size = UDim2.new(0.8, 0, 0, 10)
-barBackground.Position = UDim2.new(0.1, 0, 0, 125)
-barBackground.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
-Instance.new("UICorner", barBackground).CornerRadius = UDim.new(1, 0)
+local loadingLabel = Instance.new("TextLabel")
+loadingLabel.Text = "Loading [ 0% ]"
+loadingLabel.Size = UDim2.new(0, 300, 0, 30)
+loadingLabel.Position = UDim2.new(0.5, -150, 0.75, 0)
+loadingLabel.Font = Enum.Font.GothamMedium
+loadingLabel.TextSize = 18
+loadingLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+loadingLabel.BackgroundTransparency = 1
+loadingLabel.Parent = loginScreen
 
-local barFill = Instance.new("Frame", barBackground)
-barFill.Size = UDim2.new(0, 0, 1, 0)
-barFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Instance.new("UICorner", barFill).CornerRadius = UDim.new(1, 0)
-applyGradient(barFill)
+-- 10 Saniyelik Yükleme Efekti
+local startTime = tick()
+local duration = 10
 
-local percentText = Instance.new("TextLabel", loaderFrame)
-percentText.Size = UDim2.new(1, 0, 0, 30)
-percentText.Position = UDim2.new(0, 0, 0, 145)
-percentText.BackgroundTransparency = 1
-percentText.Text = "%0"
-percentText.TextColor3 = Color3.fromRGB(255, 255, 255)
-percentText.TextSize = 16
-percentText.Font = Enum.Font.GothamBold
+coroutine.wrap(function()
+	while tick() - startTime < duration do
+		local p = math.floor(((tick() - startTime) / duration) * 100)
+		loadingLabel.Text = "Loading [ " .. tostring(p + math.random(-2, 3)) .. "% ]"
+		task.wait(0.25)
+	end
+	loadingLabel.Text = "Loading [ 100% ]"
+	task.wait(0.4)
 
--- Yüklenme Efekti
-task.spawn(function()
-    for i = 1, 100 do
-        barFill.Size = UDim2.new(i / 100, 0, 1, 0)
-        percentText.Text = "%" .. i
-        if i == 30 then statusLabel.Text = "MM2 Arayüzü taranıyor..." end
-        if i == 70 then statusLabel.Text = "Değer listesi senkronize ediliyor..." end
-        task.wait(0.02)
-    end
-    statusLabel.Text = "Hazır!"
-    task.wait(0.4)
-    TweenService:Create(loaderFrame, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
-    loaderFrame:Destroy()
-    InitMainHub()
+	-- Z Ekranından Ortadan Çıkış Animasyonu
+	TweenService:Create(titleFrame, TweenInfo.new(0.8, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+		Size = UDim2.new(0, 400, 0, 100),
+		Position = UDim2.new(0.5, -200, 0.4, -50)
+	}):Play()
+	task.wait(0.8)
+
+	-- Ugu Sola, Hub Sağa
+	TweenService:Create(textUgu, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(-0.25, 0, 0, 0)}):Play()
+	TweenService:Create(textHub, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = UDim2.new(0.75, 0, 0, 0)}):Play()
+	task.wait(0.6)
+
+	-- Altını Çiz
+	TweenService:Create(underline, TweenInfo.new(0.5), {Size = UDim2.new(1, 0, 0, 4), Position = UDim2.new(0, 0, 1, -5)}):Play()
+	task.wait(0.8)
+
+	-- Girişi Kapat
+	TweenService:Create(loginScreen, TweenInfo.new(0.6), {BackgroundTransparency = 1, Position = UDim2.new(0, 0, -1, 0)}):Play()
+	task.wait(0.6)
+	loginScreen.Visible = false
+	openMenu()
+end)()
+
+-- 4. ANA MENÜ
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 320, 0, 380)
+mainFrame.Position = UDim2.new(0.5, -160, 0.5, -190)
+mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 23)
+mainFrame.BorderSizePixel = 0
+mainFrame.ClipsDescendants = true
+mainFrame.Visible = false
+mainFrame.Parent = uguzHubGui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 12)
+corner.Parent = mainFrame
+
+local topBar = Instance.new("Frame")
+topBar.Size = UDim2.new(1, 0, 0, 45)
+topBar.BackgroundColor3 = Color3.fromRGB(28, 28, 32)
+topBar.BorderSizePixel = 0
+topBar.Parent = mainFrame
+
+local menuTitle = Instance.new("TextLabel")
+menuTitle.Text = "UguzHub Pro"
+menuTitle.Size = UDim2.new(0, 180, 1, 0)
+menuTitle.Position = UDim2.new(0, 15, 0, 0)
+menuTitle.Font = Enum.Font.GothamBold
+menuTitle.TextSize = 18
+menuTitle.TextXAlignment = Enum.TextXAlignment.Left
+menuTitle.BackgroundTransparency = 1
+menuTitle.Parent = topBar
+applyRGB(menuTitle)
+
+-- Katlama Butonu (-)
+local foldBtn = Instance.new("TextButton")
+foldBtn.Text = "—"
+foldBtn.Size = UDim2.new(0, 45, 1, 0)
+foldBtn.Position = UDim2.new(1, -45, 0, 0)
+foldBtn.Font = Enum.Font.GothamBold
+foldBtn.TextSize = 22
+foldBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+foldBtn.BackgroundTransparency = 1
+foldBtn.Parent = topBar
+
+local folded = false
+foldBtn.MouseButton1Click:Connect(function()
+	folded = not folded
+	if folded then
+		TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0, 320, 0, 45)}):Play()
+		foldBtn.Text = "+"
+	else
+		TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0, 320, 0, 380)}):Play()
+		foldBtn.Text = "—"
+	end
 end)
 
--- ==========================================
--- 3. GELİŞMİŞ ANA MENÜ VE TRADE ANALİZ PANELİ
--- ==========================================
-function InitMainHub()
-    -- Ana Menü
-    local mainFrame = Instance.new("Frame", gui)
-    mainFrame.Size = UDim2.new(0, 340, 0, 260)
-    mainFrame.Position = UDim2.new(0.05, 0, 0.3, 0)
-    mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 26)
-    mainFrame.BorderSizePixel = 0
-    mainFrame.Active = true
-    mainFrame.Draggable = true
+-- Switch & Trade Calc İçeriği
+local contentContainer = Instance.new("Frame")
+contentContainer.Size = UDim2.new(1, -30, 0, 60)
+contentContainer.Position = UDim2.new(0, 15, 0, 65)
+contentContainer.BackgroundColor3 = Color3.fromRGB(28, 28, 35)
+contentContainer.Parent = mainFrame
 
-    Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 14)
-    local mainStroke = Instance.new("UIStroke", mainFrame)
-    mainStroke.Thickness = 2
-    applyGradient(mainStroke)
+local contentCorner = Instance.new("UICorner")
+contentCorner.CornerRadius = UDim.new(0, 8)
+contentCorner.Parent = contentContainer
 
-    local header = Instance.new("TextLabel", mainFrame)
-    header.Size = UDim2.new(1, -40, 0, 45)
-    header.Position = UDim2.new(0, 15, 0, 0)
-    header.BackgroundTransparency = 1
-    header.Text = "UGUZ HUB | Trade Assistant"
-    header.TextColor3 = Color3.fromRGB(255, 255, 255)
-    header.TextSize = 16
-    header.Font = Enum.Font.GothamBold
-    header.TextXAlignment = Enum.TextXAlignment.Left
+local calcText = Instance.new("TextLabel")
+calcText.Text = "Trade Calculator"
+calcText.Size = UDim2.new(0, 150, 1, 0)
+calcText.Position = UDim2.new(0, 12, 0, 0)
+calcText.Font = Enum.Font.GothamSemibold
+calcText.TextSize = 15
+calcText.TextColor3 = Color3.fromRGB(220, 220, 220)
+calcText.TextXAlignment = Enum.TextXAlignment.Left
+calcText.BackgroundTransparency = 1
+calcText.Parent = contentContainer
 
-    local searchBox = Instance.new("TextBox", mainFrame)
-    searchBox.Size = UDim2.new(0.9, 0, 0, 36)
-    searchBox.Position = UDim2.new(0.05, 0, 0, 50)
-    searchBox.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
-    searchBox.PlaceholderText = "Eşya ara (ör: Bat, Gemstone)..."
-    searchBox.Text = ""
-    searchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    searchBox.Font = Enum.Font.Gotham
-    searchBox.TextSize = 14
-    Instance.new("UICorner", searchBox).CornerRadius = UDim.new(0, 8)
+-- Switch Butonu
+local switchFrame = Instance.new("Frame")
+switchFrame.Size = UDim2.new(0, 50, 0, 26)
+switchFrame.Position = UDim2.new(1, -62, 0.5, -13)
+switchFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+switchFrame.Parent = contentContainer
 
-    local infoDisplay = Instance.new("TextLabel", mainFrame)
-    infoDisplay.Size = UDim2.new(0.9, 0, 0, 145)
-    infoDisplay.Position = UDim2.new(0.05, 0, 0, 95)
-    infoDisplay.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-    infoDisplay.TextColor3 = Color3.fromRGB(220, 220, 220)
-    infoDisplay.Font = Enum.Font.Gotham
-    infoDisplay.TextSize = 14
-    infoDisplay.Text = "Aramak istediğiniz silahın adını yazın.\nTakasa girdiğinizde değerler otomatik hesaplanır."
-    infoDisplay.TextWrapped = true
-    Instance.new("UICorner", infoDisplay).CornerRadius = UDim.new(0, 8)
+local switchCorner = Instance.new("UICorner")
+switchCorner.CornerRadius = UDim.new(1, 0)
+switchCorner.Parent = switchFrame
 
-    searchBox:GetPropertyChangedSignal("Text"):Connect(function()
-        local q = string.lower(searchBox.Text)
-        if q == "" then
-            infoDisplay.Text = "Aramak istediğiniz silahın adını yazın."
-            return
-        end
-        for item, val in pairs(Values) do
-            if string.find(string.lower(item), q) then
-                infoDisplay.Text = "Eşya: " .. item .. "\n\nDeğer (Value): " .. tostring(val)
-                return
-            end
-        end
-        infoDisplay.Text = "Aramaya uygun eşya bulunamadı."
-    end)
+local switchDot = Instance.new("Frame")
+switchDot.Size = UDim2.new(0, 20, 0, 20)
+switchDot.Position = UDim2.new(0, 3, 0.5, -10)
+switchDot.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+switchDot.Parent = switchFrame
 
-    -- ==========================================
-    -- 4. CANLI TRADE VALUE & W/F/L SİSTEMİ
-    -- ==========================================
-    local tradeWFLFrame = Instance.new("Frame", gui)
-    tradeWFLFrame.Size = UDim2.new(0, 360, 0, 80)
-    tradeWFLFrame.Position = UDim2.new(0.5, -180, 0.85, 0)
-    tradeWFLFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 22)
-    tradeWFLFrame.Visible = false
-    Instance.new("UICorner", tradeWFLFrame).CornerRadius = UDim.new(0, 12)
-    local wflStroke = Instance.new("UIStroke", tradeWFLFrame)
-    wflStroke.Thickness = 2
-    wflStroke.Color = Color3.fromRGB(255, 215, 0)
+local dotCorner = Instance.new("UICorner")
+dotCorner.CornerRadius = UDim.new(1, 0)
+dotCorner.Parent = switchDot
 
-    local wflStatus = Instance.new("TextLabel", tradeWFLFrame)
-    wflStatus.Size = UDim2.new(1, 0, 0, 35)
-    wflStatus.Position = UDim2.new(0, 0, 0, 5)
-    wflStatus.BackgroundTransparency = 1
-    wflStatus.Text = "TRADE ANALİZİ"
-    wflStatus.Font = Enum.Font.FredokaOne
-    wflStatus.TextSize = 22
-    wflStatus.TextColor3 = Color3.fromRGB(255, 255, 255)
+local runBtn = Instance.new("TextButton")
+runBtn.Text = "Çalıştır"
+runBtn.Size = UDim2.new(1, -30, 0, 42)
+runBtn.Position = UDim2.new(0, 15, 0, 140)
+runBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 90)
+runBtn.Font = Enum.Font.GothamBold
+runBtn.TextSize = 16
+runBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+runBtn.Visible = false
+runBtn.Parent = mainFrame
 
-    local wflDetails = Instance.new("TextLabel", tradeWFLFrame)
-    wflDetails.Size = UDim2.new(1, 0, 0, 30)
-    wflDetails.Position = UDim2.new(0, 0, 0, 40)
-    wflDetails.BackgroundTransparency = 1
-    wflDetails.Text = "Sen: 0 | Karşı: 0"
-    wflDetails.Font = Enum.Font.GothamBold
-    wflDetails.TextSize = 14
-    wflDetails.TextColor3 = Color3.fromRGB(200, 200, 200)
+local runCorner = Instance.new("UICorner")
+runCorner.CornerRadius = UDim.new(0, 8)
+runCorner.Parent = runBtn
 
-    -- Slot Değer Taraftarı & Hesaplayıcı
-    local function getItemValue(slot)
-        for _, desc in pairs(slot:GetDescendants()) do
-            if desc:IsA("TextLabel") or desc:IsA("TextBox") then
-                if Values[desc.Text] then return Values[desc.Text] end
-            elseif desc:IsA("ImageLabel") or desc:IsA("ImageButton") then
-                if Values[desc.Name] then return Values[desc.Name] end
-            end
-        end
-        if Values[slot.Name] then return Values[slot.Name] end
-        return 0
-    end
+local calcEnabled = false
+switchFrame.InputBegan:Connect(function(inp)
+	if inp.UserInputType == Enum.UserInputType.MouseButton1 then
+		calcEnabled = not calcEnabled
+		if calcEnabled then
+			TweenService:Create(switchDot, TweenInfo.new(0.25), {Position = UDim2.new(1, -23, 0.5, -10)}):Play()
+			TweenService:Create(switchFrame, TweenInfo.new(0.25), {BackgroundColor3 = Color3.fromRGB(0, 122, 255)}):Play()
+			runBtn.Visible = true
+		else
+			TweenService:Create(switchDot, TweenInfo.new(0.25), {Position = UDim2.new(0, 3, 0.5, -10)}):Play()
+			TweenService:Create(switchFrame, TweenInfo.new(0.25), {BackgroundColor3 = Color3.fromRGB(45, 45, 50)}):Play()
+			runBtn.Visible = false
+		end
+	end
+end)
 
-    local function attachOverlay(slot, val)
-        if slot:FindFirstChild("ValTag") then slot.ValTag:Destroy() end
-        if val > 0 then
-            local tag = Instance.new("TextLabel")
-            tag.Name = "ValTag"
-            tag.Size = UDim2.new(0.9, 0, 0.3, 0)
-            tag.Position = UDim2.new(0.05, 0, 0.35, 0)
-            tag.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-            tag.BackgroundTransparency = 0.2
-            tag.TextColor3 = Color3.fromRGB(255, 215, 0)
-            tag.Font = Enum.Font.FredokaOne
-            tag.TextSize = 14
-            tag.Text = "VAL: " .. val
-            tag.ZIndex = 100
-            Instance.new("UICorner", tag).CornerRadius = UDim.new(0, 6)
-            tag.Parent = slot
-        end
-    end
-
-    -- Trade Tarama Döngüsü
-    task.spawn(function()
-        local PlayerGui = player:WaitForChild("PlayerGui")
-        while task.wait(0.3) do
-            local tradeGui = PlayerGui:FindFirstChild("TradeContainer", true) or PlayerGui:FindFirstChild("TradeFrame", true) or PlayerGui:FindFirstChild("TradeGui", true)
-            
-            if tradeGui and tradeGui.Visible then
-                tradeWFLFrame.Visible = true
-                
-                local myValue = 0
-                local opponentValue = 0
-
-                -- Slot Yapılarını Dinamik Tara
-                for _, obj in pairs(tradeGui:GetDescendants()) do
-                    if obj:IsA("Frame") or obj:IsA("ImageLabel") or obj:IsA("ImageButton") then
-                        local val = getItemValue(obj)
-                        if val > 0 then
-                            attachOverlay(obj, val)
-                            
-                            -- Hangi Tarafın Kutusu Olduğunu Tespit Et
-                            local pName = string.lower(obj:GetFullName())
-                            if string.find(pName, "my") or string.find(pName, "your") or string.find(pName, "container1") then
-                                myValue = myValue + val
-                            else
-                                opponentValue = opponentValue + val
-                            end
-                        end
-                    end
-                end
-
-                -- W/F/L Hesaplama Logiği
-                wflDetails.Text = "Senin Teklifin: " .. myValue .. " | Karşı Taraf: " .. opponentValue
-                if myValue == 0 and opponentValue == 0 then
-                    wflStatus.Text = "EŞYA BEKLENİYOR"
-                    wflStatus.TextColor3 = Color3.fromRGB(200, 200, 200)
-                elseif opponentValue > myValue then
-                    wflStatus.Text = "WIN (KÂRDASIN)"
-                    wflStatus.TextColor3 = Color3.fromRGB(50, 255, 100)
-                elseif opponentValue == myValue or math.abs(opponentValue - myValue) <= 5 then
-                    wflStatus.Text = "FAIR (EŞİT TRADE)"
-                    wflStatus.TextColor3 = Color3.fromRGB(255, 215, 0)
-                else
-                    wflStatus.Text = "LOSE (ZARARDASIN)"
-                    wflStatus.TextColor3 = Color3.fromRGB(255, 50, 50)
-                end
-            else
-                tradeWFLFrame.Visible = false
-            end
-        end
-    end)
+function openMenu()
+	mainFrame.Visible = true
+	mainFrame.Size = UDim2.new(0, 0, 0, 0)
+	mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	TweenService:Create(mainFrame, TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+		Size = UDim2.new(0, 320, 0, 380),
+		Position = UDim2.new(0.5, -160, 0.5, -190)
+	}):Play()
 end
+
+-- 5. TRADE HESAPLAYICI / BİLGİ ETİKETLEME MANTIĞI
+local function createValueTag(parentObject, itemInfo)
+	if parentObject:FindFirstChild("UguzValueTag") then
+		parentObject.UguzValueTag:Destroy()
+	end
+
+	local billboard = Instance.new("BillboardGui")
+	billboard.Name = "UguzValueTag"
+	billboard.Size = UDim2.new(0, 140, 0, 45)
+	billboard.AlwaysOnTop = true
+	billboard.ExtentsOffset = Vector3.new(0, 1.5, 0)
+
+	local bgFrame = Instance.new("Frame")
+	bgFrame.Size = UDim2.new(1, 0, 1, 0)
+	bgFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+	bgFrame.BackgroundTransparency = 0.2
+	bgFrame.Parent = billboard
+
+	local tagCorner = Instance.new("UICorner")
+	tagCorner.CornerRadius = UDim.new(0, 6)
+	tagCorner.Parent = bgFrame
+
+	local valLabel = Instance.new("TextLabel")
+	valLabel.Text = itemInfo.weapon .. " Val: " .. itemInfo.value
+	valLabel.Size = UDim2.new(1, 0, 0.5, 0)
+	valLabel.Font = Enum.Font.GothamBold
+	valLabel.TextSize = 13
+	valLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
+	valLabel.BackgroundTransparency = 1
+	valLabel.Parent = bgFrame
+
+	local demLabel = Instance.new("TextLabel")
+	demLabel.Text = "Demand: " .. itemInfo.demand .. "/10"
+	demLabel.Size = UDim2.new(1, 0, 0.5, 0)
+	demLabel.Position = UDim2.new(0, 0, 0.5, 0)
+	demLabel.Font = Enum.Font.GothamSemibold
+	demLabel.TextSize = 11
+	demLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+	demLabel.BackgroundTransparency = 1
+	demLabel.Parent = bgFrame
+
+	if parentObject:IsA("BasePart") then
+		billboard.Parent = parentObject
+	elseif parentObject:IsA("Model") and parentObject.PrimaryPart then
+		billboard.Parent = parentObject.PrimaryPart
+	end
+end
+
+-- Çalıştır Butonu Tıklandığında İtemleri Tarama Mantığı
+runBtn.MouseButton1Click:Connect(function()
+	runBtn.Text = "Yükleniyor..."
+	task.wait(1.5)
+	runBtn.Text = "Sistem Aktif ✅"
+	runBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
+
+	-- Haritadaki ve Trade alanındaki eşleşen nesneleri bulup etiketler
+	workspace.DescendantAdded:Connect(function(descendant)
+		for _, data in ipairs(WEAPONS_DATA) do
+			if string.find(string.lower(descendant.Name), string.lower(data.name)) then
+				createValueTag(descendant, data)
+			end
+		end
+	end)
+
+	-- Mevcut olanları tara
+	for _, descendant in ipairs(workspace:GetDescendants()) do
+		for _, data in ipairs(WEAPONS_DATA) do
+			if string.find(string.lower(descendant.Name), string.lower(data.name)) then
+				createValueTag(descendant, data)
+			end
+		end
+	end
+end)
