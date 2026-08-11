@@ -282,8 +282,8 @@ stroke(toggleBtn)
 -- ===================== ANA MENÜ PANELİ =====================
 local menu = Instance.new("Frame")
 menu.Name = "MainMenu"
-menu.Size = UDim2.new(0, 320, 0, 620)
-menu.Position = UDim2.new(0, -340, 0.5, -310)
+menu.Size = UDim2.new(0, 320, 0, 480)
+menu.Position = UDim2.new(0, -340, 0.5, -240)
 menu.BackgroundColor3 = COL_BG
 menu.BorderSizePixel = 0
 menu.ZIndex = 5
@@ -601,12 +601,12 @@ toggleBtn.MouseButton1Click:Connect(function()
     isOpen = not isOpen
     if isOpen then
         TweenService:Create(menu, TweenInfo.new(0.35, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),
-            {Position = UDim2.new(0, 20, 0.5, -310)}):Play()
+            {Position = UDim2.new(0, 20, 0.5, -240)}):Play()
         TweenService:Create(toggleBtn, TweenInfo.new(0.35), {Position = UDim2.new(0, 346, 0.5, -23)}):Play()
         toggleBtn.Text = "<"
     else
         TweenService:Create(menu, TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.In),
-            {Position = UDim2.new(0, -340, 0.5, -310)}):Play()
+            {Position = UDim2.new(0, -340, 0.5, -240)}):Play()
         TweenService:Create(toggleBtn, TweenInfo.new(0.3), {Position = UDim2.new(0, 0, 0.5, -23)}):Play()
         toggleBtn.Text = ">"
     end
